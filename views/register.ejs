@@ -1,0 +1,42 @@
+<%- include("partials/header") -%>
+
+
+<form id="registerF">
+    <label for="Username">Username:</label><br>
+    <input type="text" id="Username" name="Username"><br>
+    <label for="Password">Password:</label><br>
+    <input type="password" id="Password" name="Password">
+    <button class="waves-effect waves-light btn" type="submit" onclick="register();">Register</button>
+  </form>
+
+
+
+
+
+<script>
+    
+
+function register(){
+    username = $('#Username').val()
+    password = $('#Password').val()
+    $.post("",{"username":username,"password":password},function(data,status,jqXHR){
+        console.log(data)
+        console.log(status)
+        if (data === "user already exists"){
+            alert("user already exists")
+        }else if(data === "user created"){
+            alert("user created")
+            window.location.replace("/profiles/login")
+        }
+    })
+}
+
+window.addEventListener("load", function (){
+    form = document.getElementById("registerF");
+    form.addEventListener("submit", function (event){
+        event.preventDefault();
+    })
+})
+</script>
+  
+<%- include("partials/footer") -%>
