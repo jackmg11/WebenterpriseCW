@@ -1,20 +1,35 @@
-const MongoClient = require("mongodb").MongoClient;
+if(process.env.NODE_ENV !== "production"){
+  require("dotenv").config()
+
+}
+
 const express = require('express')
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 const uri = "mongodb+srv://Unilogin:h1RMiyYukPBouPAl@cluster0.cvnwu.mongodb.net/webdatadb?retryWrites=true&w=majority"
-const client = new MongoClient(uri, {useNewUrlParser: true});
+const profiles = require("./routes/profiles")
+const bodyParser =require("body-parser");
+const path =require("path")
 
-MongoClient.connect(uri, function (err, db) {
-  if(err) throw err;
-  console.log('Start the database stuff');
-  //Write databse Insert/Update/Query code here..
-  });
- 
+
+const { default: mongoose } = require("mongoose")
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended:true}))
+app.set("views",path.join(__dirname,"views"))
+app.set("view engine","ejs")
+
+
+
+mongoose.connect(uri,() => {
+  console.log("Database connected")
+})
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.render("index")
 })
+
+app.use("/profiles",profiles)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
