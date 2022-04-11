@@ -1,0 +1,40 @@
+<%- include("partials/header") -%>
+
+    <p>Profile</p>
+    <%= user.username %>
+    
+    <form id="updateF">
+      <label for="Username">Username:</label><br>
+      <input type="text" id="Username" name="Username" minlength="3"><br>
+      <button class="waves-effect waves-light btn" type="submit" id="updateBtn">Update</button>
+    </form>
+    <button class="waves-effect waves-light btn" type="submit" id="deleteBtn">Delete Account</button>
+   
+    <script>
+      $('#updateBtn').click(function(){
+        username = $('#Username').val()
+        if(username.length > 3){
+        $.post("", {"action": "update", "username": username}, function(data, status, jqXHR){
+          if(data === "user updated"){
+            alert("Username Updated, Might need to refresh")
+          }
+        })
+      }})
+
+      $('#deleteBtn').click(function(){
+        $.post("", {"action": "delete"}, function(data, status, jqXHR) {
+          if(data ==="user deleted"){
+            alert("Your account has been deleted")
+            window.location.reload()
+          }
+        })
+      })
+
+      window.addEventListener("load", function (){
+        form = document.getElementById("updateF");
+        form.addEventListener("submit", function (event){
+            event.preventDefault();
+        })
+    })
+    </script>
+  <%- include("partials/footer") -%>

@@ -11,6 +11,7 @@ const profiles = require("./routes/profiles")
 const bodyParser = require("body-parser");
 const path = require("path")
 const cookieParser = require('cookie-parser')
+const session = require('express-session')
 
 
 const { default: mongoose } = require("mongoose")
@@ -21,8 +22,15 @@ app.use(bodyParser.json())
 app.set("views",path.join(__dirname,"views"))
 app.set("view engine","ejs")
 app.use(cookieParser())
-
-
+const passport = require('passport')
+const initializepassport = require("./passportconfig")
+const user = require("./models/user")
+initializepassport(passport, username => user.findOne({"username": username}), id => user.findOne({"_id": id}))
+app.use(session({
+  secret: process.env.SECRET, resave:false, saveUninitialized: false
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 
 mongoose.connect(uri,() => {
   console.log("Database connected")
