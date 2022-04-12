@@ -1,0 +1,60 @@
+<%- include("partials/header") -%>
+
+<% items.forEach((item) =>{ %>
+    <div class="col s12 m7">
+        <div class="card horizontal">
+          <div class="card-stacked">
+            <div class="card-content">
+              <p><%= item.name %></p>
+            </div>
+            <div class="card-action">
+                <p>£<%= item.price %></p>
+                <button class="waves-effect waves-dark btn" type="button" onclick="deleteItem('<%= item._id %>')">Delete Item</button>
+            </div>
+          </div>
+        </div>
+      </div>
+<% }) %>
+
+
+<form id="itemAddF">
+    <label for="Name">Item Name:</label><br>
+    <input type="text" id="Name" name="Name" minlength="2"><br>
+    <label for="Price">Item Price:</label><br>
+    <input type="number" id="Price" name="Price"><br>
+    <button class="waves-effect waves-light btn" type="submit" id="addBtn">Add Item</button>
+</form>
+
+<script>
+    
+    $('#addBtn').click(function(){
+        Itemname = $('#Name').val()
+        price = $('#Price').val()
+        if(Itemname.length > 2){
+            $.post("", {"action": "add", "name": Itemname, "price": price}, function(data, status, jqXHR){
+                if (data === "item added"){
+                    window.location.reload()
+                }
+            })
+        }
+    })
+
+    function deleteItem(id) {
+        $.post("", {"action": "delete", "id":id}, function(data, status, jqXHR){
+            if(data === "item deleted"){
+                window.location.reload()
+            }
+        })
+    }
+
+
+    window.addEventListener("load", function (){
+        form = document.getElementById("itemAddF");
+        form.addEventListener("submit", function (event){
+            event.preventDefault();
+        })
+    })
+</script>
+      <!--JavaScript at end of body for optimized loading-->
+   
+  <%- include("partials/footer") -%>

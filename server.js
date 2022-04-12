@@ -9,6 +9,7 @@ const port = process.env.PORT || 3000
 const uri = "mongodb+srv://Unilogin:h1RMiyYukPBouPAl@cluster0.cvnwu.mongodb.net/webdatadb?retryWrites=true&w=majority"
 const profiles = require("./routes/profiles")
 const comments = require("./routes/comments")
+const store = require("./routes/store")
 const bodyParser = require("body-parser");
 const path = require("path")
 const cookieParser = require('cookie-parser')
@@ -43,6 +44,7 @@ app.get('/', (req, res) => {
 
 app.use("/profiles", profiles)
 app.use("/comments", comments)
+app.use("/store", store)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
