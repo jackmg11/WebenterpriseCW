@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const user = require("../models/user")
 const bcrypt = require("bcrypt")
-const passport = require("passport")
+const passport = require("passport");
+const comment = require("../models/comment");
+const basket = require("../models/basket");
 
 function Authed(req, res, next){
     if(req.isAuthenticated()){
@@ -73,6 +75,8 @@ router.post('/profile', Authed, async(req, res) => {
         res.send("user updated")
     } else if(req.body.action ==="delete"){
         u = await req.user.exec()
+        await comment.deleteMany({"creator": u._id})
+        await basket.deleteOne({"owner": u._id})
         req.logout()
         await user.deleteOne({"_id": u._id})
         res.send("user deleted")

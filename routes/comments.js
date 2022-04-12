@@ -14,6 +14,10 @@ function Authed(req, res, next){
 router.get("/", Authed, async (req, res) =>{
     comments = await comment.find({}).populate({"path" : "creator", "select": "username"})
     u = await req.user.exec()
+    if(comments === null){
+        comments = []
+    }
+
     res.render("comments", {"comments": comments, "user": u})
 })
 router.post("/", Authed, async (req, res) =>{
