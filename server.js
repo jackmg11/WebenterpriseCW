@@ -6,7 +6,9 @@ if(process.env.NODE_ENV !== "production"){
 const express = require('express')
 const app = express()
 const port = process.env.PORT || 3000
-const uri = "mongodb+srv://Unilogin:h1RMiyYukPBouPAl@cluster0.cvnwu.mongodb.net/webdatadb?retryWrites=true&w=majority"
+const dbpass = process.env.DBPASS
+const dbuser = process.env.DBUSER
+const uri = "mongodb+srv://"+dbuser+":"+dbpass+"@cluster0.cvnwu.mongodb.net/webdatadb?retryWrites=true&w=majority"
 const profiles = require("./routes/profiles")
 const comments = require("./routes/comments")
 const store = require("./routes/store")
